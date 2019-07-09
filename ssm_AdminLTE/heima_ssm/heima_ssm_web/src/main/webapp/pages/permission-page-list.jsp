@@ -163,23 +163,27 @@
                 <div class="box-footer">
                     <div class="pull-left">
 						总共${pageInfo.pages}页，共${pageInfo.total}条数据。 每页
-						<select class="form-control" id="changePageSize" onchange="changePageSize()" style="width: 60px">
+						<div>
+							<p>
+							<select class="form-control" id="changePageSize" onchange="changePageSize()" style="width: 60px">
 
-							<c:forEach begin="1" end="5" var="p">
+								<c:forEach begin="1" end="5" var="p">
 
-								<c:if test="${pageInfo.pageSize == p }">
-									<option selected>${p}</option>
-								</c:if>
+									<c:if test="${pageInfo.pageSize == p }">
+										<option selected>${p}</option>
+									</c:if>
 
-								<c:if test="${pageInfo.pageSize != p }">
-									<option>${p}</option>
-								</c:if>
+									<c:if test="${pageInfo.pageSize != p }">
+										<option>${p}</option>
+									</c:if>
 
-								<%--三元运算符和foreach二选一--%>
-								<%--<option ${pageInfo.pageSize== p ? selected : ""}>${p}</option>--%>
+									<%--三元运算符和foreach二选一--%>
+									<%--<option ${pageInfo.pageSize== p ? selected : ""}>${p}</option>--%>
 
-							</c:forEach>
-						</select> 条
+								</c:forEach>
+							</select> 条
+							</p>
+						</div>
                     </div>
 
                     <div class="box-tools pull-right">

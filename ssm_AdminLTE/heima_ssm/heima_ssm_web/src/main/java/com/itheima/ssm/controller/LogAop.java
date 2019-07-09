@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
-
 public class LogAop {
 
     @Autowired
