@@ -1,0 +1,12 @@
+com\itheima\ssm\IUserService.class
+com\itheima\ssm\IProductService.class
+com\itheima\ssm\IRoleService.class
+com\itheima\ssm\impl\IProductServiceImpl.class
+com\itheima\ssm\IPermissionService.class
+com\itheima\ssm\impl\ISysLogServiceImpl.class
+com\itheima\ssm\ISysLogService.class
+com\itheima\ssm\impl\IRoleServiceImpl.class
+com\itheima\ssm\IOrdersService.class
+com\itheima\ssm\impl\IUserServiceImpl.class
+com\itheima\ssm\impl\IOrdersServiceImpl.class
+com\itheima\ssm\impl\IPermissionServiceImpl.class

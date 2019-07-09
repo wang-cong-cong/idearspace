@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+">
+    <!--引入service层applicationContext-->
+    <import resource="classpath:applicationContext_service.xml"/>
+
+    <context:component-scan base-package="com.itheima.ssm.controller"/>
+
+    <!--声明切面通知-->
+    <bean id="aspect" class="com.itheima.ssm.controller.LogAop"></bean>
+
+    <!--织入-->
+    <aop:config>
+        <aop:aspect ref="logAop">
+            <aop:around method="around" pointcut="execution(* com.itheima.ssm.controller.*.*(..)) and !execution(* com.itheima.ssm.controller.LogAop.*(..)))"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>

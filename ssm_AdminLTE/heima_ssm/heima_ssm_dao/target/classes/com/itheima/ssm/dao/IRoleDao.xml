@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.ssm.dao.IRoleDao">
+    <select id="findAll" resultType="role" >
+        select * from role
+    </select>
+
+    <insert id="save" parameterType="role">
+        insert  into role (roleName,roleDesc) values (#{roleName},#{roleDesc})
+    </insert>
+
+    <select id="findById" parameterType="string" resultType="role">
+        select * from role where id = #{id}
+    </select>
+
+    <select id="findRoleByIdAndAllPermission" parameterType="string" resultType="permission">
+        select * from permission where id not in (select permissionid from role_permission where roleid = #{id})
+    </select>
+
+    <insert id="addPermissionToRole" parameterType="string">
+        insert into role_permission (roleId,permissionId) values (#{roleId},#{permissionId})
+    </insert>
+</mapper>
