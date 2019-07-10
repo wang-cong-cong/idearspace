@@ -46,6 +46,6 @@
 
     <!--扫描dao层下的包,创建代理对象并放入spring容器中-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    <property name="basePackage" value="com.itheima.ssm.dao"/>
+            <property name="basePackage" value="com.itheima.ssm.dao"/>
     </bean>
 </beans>
