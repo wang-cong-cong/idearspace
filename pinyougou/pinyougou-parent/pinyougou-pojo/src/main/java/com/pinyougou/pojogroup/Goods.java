@@ -14,10 +14,19 @@ import java.util.List;
  */
 public class Goods implements Serializable {
 
-    public TbGoods goods;//商品的spu
-    public TbGoodsDesc goodsDesc;//商品的扩展信息
+    /**
+     * 商品的spu
+     */
+    public TbGoods goods;
+    /**
+     * 商品的扩展信息
+     */
+    public TbGoodsDesc goodsDesc;
 
-    public List<TbItem> itemList;//商品的sku
+    /**
+     * 商品的sku
+     */
+    public List<TbItem> itemList;
 
     public TbGoods getGoods() {
         return goods;
