@@ -6,6 +6,7 @@ import com.pinyougou.pojogroup.Goods;
 import com.pinyougou.sellergoods.service.GoodsService;
 import entity.PageResult;
 import entity.Result;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,7 +73,16 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbGoods goods){
+	public Result update(@RequestBody Goods goods){
+
+		//获取当前商家的ID
+		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+		//获取当前商品的对象通过goods
+		Goods goods2 = goodsService.findOne(goods.getGoods().getId());
+		//判断当前从数据库查出的商品的商家和当前登录的商家是否相同或者前端传过来的商品的商家id与当前登录的商家是否一致
+		if (!goods2.getGoods().getSellerId().equals(sellerId)||!goods.getGoods().getSellerId().equals(sellerId)){
+			return new Result(false,"非法操作");
+		}
 		try {
 			goodsService.update(goods);
 			return new Result(true, "修改成功");
@@ -88,7 +98,7 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public TbGoods findOne(Long id){
+	public Goods findOne(Long id){
 		return goodsService.findOne(id);		
 	}
 	
@@ -117,6 +127,11 @@ public class GoodsController {
 	 */
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
+
+		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		goods.setSellerId(sellerId);
+
 		return goodsService.findPage(goods, page, rows);		
 	}
 	

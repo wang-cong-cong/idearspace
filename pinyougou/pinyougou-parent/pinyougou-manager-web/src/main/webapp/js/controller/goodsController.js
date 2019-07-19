@@ -1,7 +1,7 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller   ,goodsService){	
+app.controller('goodsController' ,function($scope,$controller,itemCatService,goodsService){
 	
-	$controller('baseController',{$scope:$scope});//继承
+	$controller('base_Controller',{$scope:$scope});//继承
 	
     //读取列表数据绑定到表单中  
 	$scope.findAll=function(){
@@ -10,7 +10,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				$scope.list=response;
 			}			
 		);
-	}    
+	};
 	
 	//分页
 	$scope.findPage=function(page,rows){			
@@ -20,7 +20,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
-	}
+	};
 	
 	//查询实体 
 	$scope.findOne=function(id){				
@@ -29,7 +29,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				$scope.entity= response;					
 			}
 		);				
-	}
+	};
 	
 	//保存 
 	$scope.save=function(){				
@@ -49,7 +49,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				}
 			}		
 		);				
-	}
+	};
 	
 	 
 	//批量删除 
@@ -63,7 +63,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				}						
 			}		
 		);				
-	}
+	};
 	
 	$scope.searchEntity={};//定义搜索对象 
 	
@@ -75,6 +75,40 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
+	};
+
+
+	//商家商品审核状态的集合
+	$scope.status=["未审核","已审核","已驳回","关闭"];
+
+	//定义一个可以放分类列表的集合
+	$scope.itemCatList = [];
+	$scope.findItemCatList = function () {
+		itemCatService.findAll().success(
+			function (response) {
+				for (var i = 0; i <response.length; i++) {
+					$scope.itemCatList[response[i].id]=response[i].name;
+				}
+			}
+		);
+	};
+
+
+	//修改状态
+	$scope.updateStatus = function (status) {
+		goodsService.updateStatus($scope.selectIds,status).success(
+			function (response) {
+				if (response.success){
+					//刷新页面
+					$scope.reloadList();
+					//清空$scope.selectIds数组中的元素
+					$scope.selectIds = [];
+				}else{
+					alert(response.message);
+				}
+			}
+		);
 	}
-    
+
+
 });	

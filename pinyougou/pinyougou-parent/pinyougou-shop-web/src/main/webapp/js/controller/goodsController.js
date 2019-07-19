@@ -1,5 +1,5 @@
 //控制层
-app.controller('goodsController', function ($scope, $controller, uploadService, goodsService,itemCatService,typeTemplateService) {
+app.controller('goodsController', function ($scope, $controller, $location,uploadService, goodsService,itemCatService,typeTemplateService) {
 
     $controller('base_Controller', {$scope: $scope});//继承
 
@@ -23,18 +23,45 @@ app.controller('goodsController', function ($scope, $controller, uploadService, 
     };
 
     //查询实体
-    $scope.findOne = function (id) {
+    $scope.findOne = function () {
+
+        //获取参数值
+        var id = $location.search()["id"];
+
+        //判断id是否为null
+        if (id == null) {
+            return;
+        }
         goodsService.findOne(id).success(
             function (response) {
                 $scope.entity = response;
+                //回显商品介绍
+                editor.html($scope.entity.goodsDesc.introduction);
+                //回显图片
+                $scope.entity.goodsDesc.itemImages = JSON.parse($scope.entity.goodsDesc.itemImages);
+                //回显扩展属性时只写下面这句回显不出来，
+                // 是因为在添加商品的读取品牌列表这段代码中也要读取该数据会把数据覆盖掉，
+                // 所以需要在那个地方判断一下即写if ($scope.location()['id'] == null) {}这个
+                $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.entity.goodsDesc.customAttributeItems);
+
+                //回显规格
+                $scope.entity.goodsDesc.specificationItems = JSON.parse($scope.entity.goodsDesc.specificationItems);
+
+                //回显sku列表
+                for(var i=0;i<$scope.entity.itemList.length;i++){
+                    $scope.entity.itemList[i].spec = JSON.parse($scope.entity.itemList[i].spec);
+                }
             }
         );
     };
 
     //保存
     $scope.save = function () {
+
+        $scope.entity.goodsDesc.introduction = editor.html();
+
         var serviceObject;//服务层对象
-        if ($scope.entity.id != null) {//如果有ID
+        if ($scope.entity.goods.id!= null) {//如果有ID
             serviceObject = goodsService.update($scope.entity); //修改
         } else {
             serviceObject = goodsService.add($scope.entity);//增加
@@ -42,26 +69,8 @@ app.controller('goodsController', function ($scope, $controller, uploadService, 
         serviceObject.success(
             function (response) {
                 if (response.success) {
-                    //重新查询
-                    $scope.reloadList();//重新加载
-                } else {
-                    alert(response.message);
-                }
-            }
-        );
-    };
-
-    //添加
-    $scope.add = function () {
-
-        $scope.entity.goodsDesc.introduction = editor.html();
-
-        goodsService.add($scope.entity).success(
-            function (response) {
-                if (response.success) {
-                    alert("添加成功");
-                    $scope.entity = {};
-                    editor.html("");
+                    alert("保存成功");
+                    location.href = 'goods.html';
                 } else {
                     alert(response.message);
                 }
@@ -171,7 +180,9 @@ app.controller('goodsController', function ($scope, $controller, uploadService, 
                 $scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds);
 
                 //扩展属性
+                if ($scope.location()['id'] == null) {
                 $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems);
+            }
             }
         );
 
@@ -237,6 +248,38 @@ app.controller('goodsController', function ($scope, $controller, uploadService, 
             }
         }
         return newList;
+    };
+
+    //商家商品审核状态的集合
+    $scope.status=["未审核","已审核","已驳回","关闭"];
+
+    //定义一个可以放分类列表的集合
+    $scope.itemCatList = [];
+    $scope.findItemCatList = function () {
+        itemCatService.findAll().success(
+            function (response) {
+                for (var i = 0; i <response.length; i++) {
+                    $scope.itemCatList[response[i].id]=response[i].name;
+                }
+            }
+        );
+    };
+
+
+    $scope.checkAttributeValue = function (specName,optionName) {
+        var items = $scope.entity.goodsDesc.specificationItems;
+        var object =  $scope.searchObjectByKey(items,'attributeName',specName);
+        
+        if (object == null){
+            return false;
+        } else{
+
+            if (object.attributeValue.indexOf(optionName)>=0){
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 
 });	

@@ -9,6 +9,7 @@ import com.pinyougou.pojo.BrandExample;
 import com.pinyougou.sellergoods.service.BrandService;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Map;
  * @author cong
  */
 @Service
+@Transactional
 public class BrandServiceImpl implements BrandService {
 
     @Autowired
