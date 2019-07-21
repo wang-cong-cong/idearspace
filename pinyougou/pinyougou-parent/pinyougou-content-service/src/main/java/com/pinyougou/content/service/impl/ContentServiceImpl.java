@@ -13,6 +13,7 @@ import com.pinyougou.pojo.TbContentExample.Criteria;
 
 
 import entity.PageResult;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * 服务实现层
@@ -48,7 +49,10 @@ public class ContentServiceImpl implements ContentService {
 	 */
 	@Override
 	public void add(TbContent content) {
-		contentMapper.insert(content);		
+		contentMapper.insert(content);
+
+		//清除缓存
+		redisTemplate.boundHashOps("content").delete(content.getCategoryId());
 	}
 
 	
@@ -57,7 +61,16 @@ public class ContentServiceImpl implements ContentService {
 	 */
 	@Override
 	public void update(TbContent content){
+
+		//查询修改之前的分类Id
+		Long categoryId = contentMapper.selectByPrimaryKey(content.getId()).getCategoryId();
+		//再清除修改之前的id
+		redisTemplate.boundHashOps("content").delete(categoryId);
 		contentMapper.updateByPrimaryKey(content);
+
+		if (categoryId.longValue()!=content.getCategoryId().longValue()){
+			redisTemplate.boundHashOps("content").delete(content.getCategoryId());
+		}
 	}	
 	
 	/**
@@ -76,6 +89,10 @@ public class ContentServiceImpl implements ContentService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
+			//在删除该id之前要先查询此分类id后，在执行删除id和删除缓存
+			Long categoryId = contentMapper.selectByPrimaryKey(id).getCategoryId();
+
+			redisTemplate.boundHashOps("content").delete(categoryId);
 			contentMapper.deleteByPrimaryKey(id);
 		}		
 	}
@@ -106,6 +123,38 @@ public class ContentServiceImpl implements ContentService {
 		
 		Page<TbContent> page= (Page<TbContent>)contentMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
+	}
+
+
+	@Autowired
+	private RedisTemplate redisTemplate;
+
+
+	@Override
+	public List<TbContent> findByCategoryId(Long categoryId) {
+
+		List<TbContent> list = (List<TbContent>) redisTemplate.boundHashOps("content").get(categoryId);
+		if (list == null){
+
+			System.out.println("从数据库读取并存入缓存");
+
+			TbContentExample example = new TbContentExample();
+			Criteria criteria2 = example.createCriteria();
+			//根据id查询
+			criteria2.andCategoryIdEqualTo(categoryId);
+			//排除没有开启状态的
+			criteria2.andStatusEqualTo("1");
+			//将这些排序
+			example.setOrderByClause("sort_order");
+
+			list=contentMapper.selectByExample(example);
+
+			//将查出的信息存入缓存
+			redisTemplate.boundHashOps("content").put(categoryId,list);
+		}else {
+			System.out.println("从缓存读取数据");
+		}
+		return list;
 	}
 
 

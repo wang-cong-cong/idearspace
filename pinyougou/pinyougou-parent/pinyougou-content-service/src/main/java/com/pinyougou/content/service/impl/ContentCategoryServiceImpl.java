@@ -1,6 +1,7 @@
 package com.pinyougou.content.service.impl;
 import java.util.List;
 
+import com.pinyougou.content.service.ContentCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -39,7 +40,7 @@ public class ContentCategoryServiceImpl implements ContentCategoryService {
 	public PageResult findPage(int pageNum, int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);		
 		Page<TbContentCategory> page=   (Page<TbContentCategory>) contentCategoryMapper.selectByExample(null);
-		return new PageResult(page.getTotal(), page.getResult());
+		return new PageResult<>(page.getTotal(), page.getResult());
 	}
 
 	/**

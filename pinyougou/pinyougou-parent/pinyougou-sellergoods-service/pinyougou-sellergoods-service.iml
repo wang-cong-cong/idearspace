@@ -96,6 +96,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="pinyougou-pojo" />
-    <orderEntry type="library" name="Maven: com.pinyougou:pinyougou-sellergoods-interface:1.0-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="pinyougou-sellergoods-interface" />
   </component>
 </module>
