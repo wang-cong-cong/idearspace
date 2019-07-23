@@ -23,3 +23,6 @@ day06
 target
 .gitignore
 springdatasolr_demo1
+out
+dubbox_web
+dubbox_service
