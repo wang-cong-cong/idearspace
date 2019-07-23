@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.pinyougou.dao.TbSpecificationOptionMapper;
 import com.pinyougou.pojo.TbSpecificationOption;
 import com.pinyougou.pojo.TbSpecificationOptionExample;
@@ -18,6 +19,7 @@ import com.pinyougou.pojo.TbTypeTemplateExample.Criteria;
 import com.pinyougou.sellergoods.service.TypeTemplateService;
 
 import entity.PageResult;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -111,10 +113,36 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	
 		}
 		
-		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);		
+		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);
+
+		//存入品牌和规格数据到缓存
+			saveToRedis();
+
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
+	@Autowired
+	private RedisTemplate redisTemplate;
+
+	private void saveToRedis(){
+
+		//获取模板数据
+		List<TbTypeTemplate> templateList = findAll();
+		//遍历模板数据
+		for (TbTypeTemplate tbTypeTemplate : templateList) {
+			//将获得的品牌字符串转换为集合
+			List<Map> brandList = JSON.parseArray(tbTypeTemplate.getBrandIds(),Map.class);
+			//存储品牌列表
+			redisTemplate.boundHashOps("brandList").put(tbTypeTemplate.getId(),brandList);
+
+			//存储规格列表
+			List<Map> specList = findSpecList(tbTypeTemplate.getId());
+			redisTemplate.boundHashOps("specList").put(tbTypeTemplate.getId(),specList);
+		}
+		System.out.println("把品牌存入缓存");
+		System.out.println("把规格存入缓存");
+
+	}
 
 
 
@@ -125,6 +153,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	@Override
 	public List<Map> findSpecList(Long id) {
 
+		//根据模板id查询模板对象
 		TbTypeTemplate tbTypeTemplate = typeTemplateMapper.selectByPrimaryKey(id);
 
 		//获取模板中规格的对象转换为集合

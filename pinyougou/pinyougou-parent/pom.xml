@@ -16,6 +16,10 @@
     <module>pinyougou-sellergoods-interface</module>
     <module>pinyougou-content-service</module>
     <module>pinyougou-protal-web</module>
+      <module>pinyougou-solr-util</module>
+    <module>pinyougou-search-interface</module>
+      <module>pinyougou-search-service</module>
+      <module>pinyougou-search-web</module>
       <!--<module>pinyougou-sellergoods-service</module>-->
     <!--<module>pinyougou-shop-web</module>-->
     <!--<module>pinyougou-manager-web</module>-->
