@@ -22,4 +22,9 @@ public class SolrUtilTest {
     public void execute(){
         solrUtil.importItemData();
     }
+
+    @Test
+    public void delete(){
+        solrUtil.deleteAll();
+    }
 }

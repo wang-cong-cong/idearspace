@@ -8,6 +8,8 @@ import com.pinyougou.pojo.TbItemExample;
 import net.sf.jsqlparser.expression.operators.relational.ItemsList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.solr.core.SolrTemplate;
+import org.springframework.data.solr.core.query.SimpleQuery;
+import org.springframework.data.solr.core.query.SolrDataQuery;
 import org.springframework.stereotype.Component;
 
 
@@ -27,6 +29,9 @@ public class SolrUtil {
     @Autowired
     private SolrTemplate solrTemplate;
 
+    /**
+     * 导入商品到solr索引库
+     */
     public void importItemData(){
 
         TbItemExample example = new TbItemExample();
@@ -43,6 +48,15 @@ public class SolrUtil {
         }
 
         solrTemplate.saveBeans(tbItems);
+        solrTemplate.commit();
+    }
+
+    /**
+     * 删除数据
+     */
+    public void deleteAll(){
+        SolrDataQuery query = new SimpleQuery("*:*");
+        solrTemplate.delete(query);
         solrTemplate.commit();
     }
 }
