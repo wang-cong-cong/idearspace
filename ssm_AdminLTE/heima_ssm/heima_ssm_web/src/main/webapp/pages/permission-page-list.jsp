@@ -178,7 +178,7 @@
 									</c:if>
 
 									<%--三元运算符和foreach二选一--%>
-									<%--<option ${pageInfo.pageSize== p ? selected : ""}>${p}</option>--%>
+									<%--<option ${pageInfo.pageSize== p ? "selected" : ""}>${p}</option>--%>
 
 								</c:forEach>
 							</select> 条

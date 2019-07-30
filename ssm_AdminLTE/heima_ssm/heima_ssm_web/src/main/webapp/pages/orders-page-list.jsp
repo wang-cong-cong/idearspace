@@ -295,7 +295,7 @@
 									</c:if>
 
 									<%--三元运算符--%>
-									<%--<option ${pageInfo.pageSize== p ? selected : ""}>${p}</option>--%>
+									<%--<option ${pageInfo.pageSize== p ? "selected" : ""}>${p}</option>--%>
 								</c:forEach>
                             </select> 条
                         </div>
