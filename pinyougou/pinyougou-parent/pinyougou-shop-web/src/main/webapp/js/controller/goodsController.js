@@ -180,9 +180,10 @@ app.controller('goodsController', function ($scope, $controller, $location,uploa
                 $scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds);
 
                 //扩展属性
-                if ($scope.location()['id'] == null) {
                 $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems);
-            }
+                /*if ($scope.location()[id] != null){
+                    $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems);
+                }*/
             }
         );
 
