@@ -23,6 +23,9 @@
         <module>pinyougou-user-interface</module>
         <module>pinyougou-user-service</module>
         <module>pinyougou-user-web</module>
+        <module>pinyougou-cart-interface</module>
+        <module>pinyougou-cart-service</module>
+        <module>pinyougou-cart-web</module>
         <!--<module>pinyougou-search-service</module>-->
         <!--<module>pinyougou-search-web</module>-->
         <!--<module>pinyougou-sellergoods-service</module>-->
