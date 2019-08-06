@@ -22,5 +22,16 @@ app.service("cartListService",function ($http) {
             }
         }
         return totalValue;
-    }
+    };
+
+    //获取当前账号的地址展示地址信息
+    this.findAddressList = function () {
+        return $http.get("address/findAddressByUserId.do")
+    };
+
+    this.submitOrder = function (order) {
+        return $http.post('order/add.do',order);
+    };
+
+    
 });
