@@ -12,6 +12,7 @@
 
     <artifactId>pinyougou-seckill-interface</artifactId>
 
+
     <dependencies>
         <dependency>
             <groupId>com.pinyougou</groupId>

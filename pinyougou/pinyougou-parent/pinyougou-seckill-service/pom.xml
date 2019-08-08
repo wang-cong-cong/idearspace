@@ -91,10 +91,20 @@
             <artifactId>pinyougou-seckill-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+         <dependency>
+             <groupId>com.pinyougou</groupId>
+             <artifactId>pinyougou-pay-interface</artifactId>
+             <version>1.0-SNAPSHOT</version>
+         </dependency>
         <dependency>
             <groupId>com.pinyougou</groupId>
             <artifactId>pinyougou-common</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
         </dependency>
 
     </dependencies>
