@@ -1,14 +1,15 @@
-package com.itcast.pojo;
+package cn.itcast.domain;
 
 import javax.persistence.*;
 
 /**
+ * 实体类
  * @author cong
  */
-@Entity//标识这是一个实体类
-@Table(name = "cst_customer")//建立实体类和表的关系
-public class Customer {
 
+@Entity//声明实体类
+@Table(name = "cst_customer")
+public class Customer {
     @Id//设置当前私有属性为主键
     @GeneratedValue(strategy = GenerationType.IDENTITY)//配置主键自增策略
     @Column(name="cust_id") //指定和表中cust_id字段的映射关系
@@ -101,3 +102,4 @@ public class Customer {
                 '}';
     }
 }
+

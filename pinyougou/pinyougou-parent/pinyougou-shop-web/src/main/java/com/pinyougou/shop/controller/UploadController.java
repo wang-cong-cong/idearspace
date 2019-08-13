@@ -1,9 +1,7 @@
 package com.pinyougou.shop.controller;
 
 import entity.Result;
-import javafx.print.Printer;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
