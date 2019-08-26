@@ -15,6 +15,10 @@ import java.util.List;
  */
 public interface CustomerDao extends JpaRepository<Customer,Long>, JpaSpecificationExecutor<CustomerDao> {
 
+    /**
+     * SpringDataJPA原生注解查询
+     * @return
+     */
     @Query(value = "from Customer ")
     public List<Customer> findAll();
 
@@ -27,7 +31,7 @@ public interface CustomerDao extends JpaRepository<Customer,Long>, JpaSpecificat
 
 
     /**
-     * 使用query注解的sql方式
+     * 使用query注解的sql方式，jpql方式查询
      * @param
      */
     @Query(value = "select * from cst_customer",nativeQuery = true)

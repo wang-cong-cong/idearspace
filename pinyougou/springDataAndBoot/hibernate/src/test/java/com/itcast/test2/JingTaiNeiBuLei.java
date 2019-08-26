@@ -6,14 +6,13 @@ import java.util.function.Predicate;
  * 静态内部类
  */
 public class JingTaiNeiBuLei {
-
     private JingTaiNeiBuLei(){};
 
-    private static class sing{
-        private final static JingTaiNeiBuLei j1= new JingTaiNeiBuLei();
+    private static class jingtai{
+        private static final JingTaiNeiBuLei js = new JingTaiNeiBuLei();
     }
 
-    public static JingTaiNeiBuLei getSing(){
-        return sing.j1;
+    public static final JingTaiNeiBuLei getInstance(){
+        return jingtai.js;
     }
 }

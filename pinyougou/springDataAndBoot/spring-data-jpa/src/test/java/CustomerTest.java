@@ -18,6 +18,11 @@ import java.util.List;
 @ContextConfiguration(locations="classpath:applicationContext.xml")
 public class CustomerTest {
 
+    /**
+     *Spring Data Jpa 方法命名规则查询（了解）
+     * 方法命名规则查询--->jpql查询封装。
+     */
+
     @Autowired
     private CustomerDao customerDao;
 
